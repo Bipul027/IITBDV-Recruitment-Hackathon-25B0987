@@ -24,7 +24,7 @@
 - In the control function, pass the modulus of the current velocity vector (rather than only the x-component) to the throttle algorithm.
 
 ## Simulation-Development
-Not attemped due to lack of experience
+Not attemped due to lack of experience.
 
 ## SLAM
 ### mapping.py
@@ -33,9 +33,9 @@ Not attemped due to lack of experience
 - Added threshold and averaging factor variables to allow for modification later.
 
 ### localization.py
-- Added random noise in velocity, heading and steering to simulate realistic scenarios
+- Added random noise in velocity, heading and steering to simulate realistic scenarios.
 - Added a simple slip factor to account for slips in real tracks.
 
 ### data_association.py
-- Updated association of data by specifying a gate over which measurements are ignored
+- Updated association of data by specifying a gate over which measurements are ignored.
 - This will help in ignoring the data which is very far away from the required (track) data which allows accurate track formation.
