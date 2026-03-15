@@ -176,7 +176,7 @@ class Solution(Bot):
         self.pos[0]  += dx
         self.pos[1]  += dy
         self.heading  = angle_wrap(
-            self.heading + dheading + np.random.normal(delta_heading)
+            self.heading + dheading
         )
 
 
