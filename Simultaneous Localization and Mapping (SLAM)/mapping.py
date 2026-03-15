@@ -169,10 +169,32 @@ class Solution(Bot):
         if len(measurements) == 0:
             return
         gm = local_to_global(measurements, self.pos, self.heading)
+        # for p in gm:
+        #     if not self.learned_map or \
+        #        min(np.linalg.norm(p - q) for q in self.learned_map) > 2.0:
+        #         self.learned_map.append(p.copy())
+
+        if len(self.learned_map) == 0:
+            # Add all points in sight 
+            self.learned_map = gm.tolist()
+            return
+        # get a numpy copy of self.learned_map for faster vectorized operations
+        lmap = np.array(self.learned_map)
+        THRESHOLD = 2.0
+        K = 0.5 # Averaging factor for updation of older landmarks
         for p in gm:
-            if not self.learned_map or \
-               min(np.linalg.norm(p - q) for q in self.learned_map) > 2.0:
+            dists = np.linalg.norm(lmap-p, axis=1)
+            min_dist = dists.min() if len(dists) > 0 else np.inf
+            min_idx = dists.argmin() if len(dists) > 0 else -1
+            if min_dist > THRESHOLD:
+                # This is considered as new landmark
                 self.learned_map.append(p.copy())
+            else:
+                # This landmark already exists, use its previous average position to update position
+                for i in range(2):
+                    self.learned_map[min_idx][i] = K*p[i] + (1.0-K)*(self.learned_map[min_idx][i])
+
+
 
 # ── Problem 3 – Mapping ───────────────────────────────────────────────────────
 def make_problem3():

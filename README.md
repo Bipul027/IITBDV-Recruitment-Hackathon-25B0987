@@ -10,6 +10,7 @@ I made a python file cone_perception.py to perform the task
 ### Assumptions 
 - Assumed that the model is working correctly and giving the correct bounding box coordinates
 - Assumed that cv2 library has to be used to depict boxes and labels as I couldn't find labelling features in YOLO
+
 ## PPC
 ### planner.py
 - I found the nearest yellow cone to each blue cone (which would be its pair) and found their midpoint, this became a waypoint which I added to the path
@@ -19,3 +20,8 @@ I made a python file cone_perception.py to perform the task
 - In the throttle algorithm, I just took the difference between target speed and current speed to get the error and I defined throttle to be proportional to this error. When error comes out to be negative, I assigned the magnitude of throttle to brake, and set throttle to zero.
 - In the control function I changed the second argument of the throttle algorithm to be the modulus of the current velocity vector rather than only the x component.
 
+## SLAM
+### mapping.py
+- Converted arrays to numpy for faster computation.
+- Changed the positions of known cones by averaging to get more accurate positions.
+- Added threshold and averaging factor variables to allow for modification later.
