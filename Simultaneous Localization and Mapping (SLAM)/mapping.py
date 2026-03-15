@@ -168,20 +168,22 @@ class Solution(Bot):
         """
         if len(measurements) == 0:
             return
+        
         gm = local_to_global(measurements, self.pos, self.heading)
 
         if len(self.learned_map) == 0:
             # Add all points in sight 
             self.learned_map = gm.tolist()
             return
+        
         # get a numpy copy of self.learned_map for faster vectorized operations
-        lmap = np.array(self.learned_map)
+        lmap      = np.array(self.learned_map)
         THRESHOLD = 2.0
-        K = 0.5 # Averaging factor for updation of older landmarks
+        K         = 0.5 # Averaging factor for updation of older landmarks
         for p in gm:
-            dists = np.linalg.norm(lmap-p, axis=1)
+            dists    = np.linalg.norm(lmap-p, axis=1)
             min_dist = dists.min() if len(dists) > 0 else np.inf
-            min_idx = dists.argmin() if len(dists) > 0 else -1
+            min_idx  = dists.argmin() if len(dists) > 0 else -1
             if min_dist > THRESHOLD:
                 # This is considered as new landmark
                 self.learned_map.append(p.copy())

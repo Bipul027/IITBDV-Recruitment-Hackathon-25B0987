@@ -156,10 +156,27 @@ class Solution(Bot):
             ẏ = v·sin(ψ)
             ψ̇ = (v / L)·tan(δ)
         """
-        self.pos[0]  += velocity * np.cos(self.heading) * DT
-        self.pos[1]  += velocity * np.sin(self.heading) * DT
+        # Noise modelling
+        delta_v       = 0.07
+        delta_steer   = 0.006
+        delta_heading = 0.003
+
+        noisy_v     = velocity + np.random.normal(0, delta_v)
+        noisy_steer = steering + np.random.normal(0, delta_heading)
+
+        dx       = noisy_v * np.cos(self.heading) * DT
+        dy       = noisy_v * np.sin(self.heading) * DT
+        dheading = (noisy_v / WHEELBASE) * np.tan(noisy_steer) * DT
+
+        # Apply slip factor
+        slip = 0.95
+        dx  *= slip
+        dy  *= slip
+
+        self.pos[0]  += dx
+        self.pos[1]  += dy
         self.heading  = angle_wrap(
-            self.heading + (velocity / WHEELBASE) * np.tan(steering) * DT
+            self.heading + dheading + np.random.normal(delta_heading)
         )
 
 

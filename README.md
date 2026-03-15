@@ -26,4 +26,6 @@ I made a python file cone_perception.py to perform the task
 - Changed the positions of known cones by averaging to get more accurate positions.
 - Added threshold and averaging factor variables to allow for modification later.
 
-
+### localization.py
+- Added random noise in velocity, heading and steering to simulate realistic scenarios
+- Added a simple slip factor to account for slips in real tracks.
