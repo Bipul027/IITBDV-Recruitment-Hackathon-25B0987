@@ -43,7 +43,7 @@ def throttle_algorithm(target_speed, current_speed, dt):
     brake = 0.0
     error = target_speed - current_speed
 
-    k = 3.91
+    k = 3.9
     throttle = k * error
 
     if throttle < 0:
