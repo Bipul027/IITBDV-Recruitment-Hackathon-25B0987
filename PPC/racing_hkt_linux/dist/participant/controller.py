@@ -26,7 +26,7 @@ def steering(path: list[dict], state: dict):
     # Find nearest waypoint
     dists = [wayDist(pos, [p["x"], p["y"]]) for p in path]
     nearest_idx = np.argmin(dists)
-    idx = min(nearest_idx+2, len(path)-1)
+    idx = (nearest_idx+2)%(len(path))
     w = np.array([path[idx]["x"], path[idx]["y"]])
     wayAngle = np.arctan2((w-pos)[1], (w-pos)[0])
 
@@ -43,7 +43,7 @@ def throttle_algorithm(target_speed, current_speed, dt):
     brake = 0.0
     error = target_speed - current_speed
 
-    k = 3.9
+    k = 4
     throttle = k * error
 
     if throttle < 0:
