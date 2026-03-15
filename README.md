@@ -29,3 +29,7 @@ I made a python file cone_perception.py to perform the task
 ### localization.py
 - Added random noise in velocity, heading and steering to simulate realistic scenarios
 - Added a simple slip factor to account for slips in real tracks.
+
+### data_association.py
+- Updated association of data by specifying a gate over which measurements are ignored
+- This will help in ignoring the data which is very far away from the required (track) data which allows accurate track formation.

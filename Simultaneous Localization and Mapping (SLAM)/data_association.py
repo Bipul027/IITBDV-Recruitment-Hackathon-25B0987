@@ -176,9 +176,18 @@ class Solution(Bot):
 
         gm = local_to_global(measurements, self.pos, self.heading)
         self._global_meas = gm
-
         D           = distance.cdist(gm, current_map)
-        self._assoc = np.argmin(D, axis=1)
+        assoc = -1 * np.ones(len(gm), dtype=int)  # default = unassigned
+
+        # Specify gate distance to ignore cones over this distance
+        GATE = 1.5
+        for i in range(len(gm)):
+            j_min = np.argmin(D[i])
+            if D[i, j_min] <= GATE:
+                assoc[i] = j_min
+
+        self._assoc = assoc
+        # self._assoc = np.argmin(D, axis=1)
         return self._assoc
 
 # ── Problem 1 – Data Association ──────────────────────────────────────────────
