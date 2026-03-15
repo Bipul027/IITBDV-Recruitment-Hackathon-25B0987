@@ -25,3 +25,5 @@ I made a python file cone_perception.py to perform the task
 - Converted arrays to numpy for faster computation.
 - Changed the positions of known cones by averaging to get more accurate positions.
 - Added threshold and averaging factor variables to allow for modification later.
+
+

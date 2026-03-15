@@ -169,10 +169,6 @@ class Solution(Bot):
         if len(measurements) == 0:
             return
         gm = local_to_global(measurements, self.pos, self.heading)
-        # for p in gm:
-        #     if not self.learned_map or \
-        #        min(np.linalg.norm(p - q) for q in self.learned_map) > 2.0:
-        #         self.learned_map.append(p.copy())
 
         if len(self.learned_map) == 0:
             # Add all points in sight 
