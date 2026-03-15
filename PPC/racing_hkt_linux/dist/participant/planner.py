@@ -44,5 +44,25 @@ def plan(cones: list[dict]) -> list[dict]:
                 yId = i
         yellowCone = yellow[yId]
         path.append({"x": ((blueCone[0]+yellowCone[0])/2), "y": ((blueCone[1]+yellowCone[1])/2)})
+        spacing = 0.7
+    # populate the waypoints
+    new_path = []
+    for i in range(len(path)):
+        p1 = np.array([path[i]["x"], path[i]["y"]])
+        p2 = np.array([path[(i+1) % len(path)]["x"], path[(i+1) % len(path)]["y"]])
+
+        dist = np.linalg.norm(p2 - p1)
+
+        n = max(1, int(dist / spacing))
+
+        for j in range(n):
+            t = j / n
+            point = p1 + t * (p2 - p1)
+
+            new_path.append({
+                "x": float(point[0]),
+                "y": float(point[1])
+            })
+    path = new_path
     return path
 

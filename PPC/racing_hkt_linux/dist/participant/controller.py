@@ -26,13 +26,14 @@ def steering(path: list[dict], state: dict):
     # Find nearest waypoint
     dists = [wayDist(pos, [p["x"], p["y"]]) for p in path]
     nearest_idx = np.argmin(dists)
-    idx = (nearest_idx+2)%(len(path))
+    idx = (nearest_idx+10)%(len(path))
     w = np.array([path[idx]["x"], path[idx]["y"]])
     wayAngle = np.arctan2((w-pos)[1], (w-pos)[0])
 
     # set the steering stabilizing ratio
-    steer = 1*(wayAngle-state["yaw"])
-    steer = (steer + np.pi) % (2*np.pi) - np.pi
+    k = 1
+    steer = (wayAngle-state["yaw"])
+    steer = ((steer + np.pi) % (2*np.pi) - np.pi)*k
     # 0.5 in the max steering angle in radians (about 28.6 degrees)
     return np.clip(steer, -0.5, 0.5)
 
@@ -43,7 +44,7 @@ def throttle_algorithm(target_speed, current_speed, dt):
     brake = 0.0
     error = target_speed - current_speed
 
-    k = 4
+    k = 0.9
     throttle = k * error
 
     if throttle < 0:
@@ -87,7 +88,7 @@ def control(
     brake = 0.0
     # TODO: implement your controller here
     steer = steering(path, state)
-    target_speed = 13 - abs(steer)  # m/s, adjust as needed
+    target_speed = 19 # m/s, adjust as needed
     global integral
     speed = np.sqrt(state["vx"]**2 + state["vy"]**2)
     throttle, brake = throttle_algorithm(target_speed, speed, 0.05)
