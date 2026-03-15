@@ -1,3 +1,7 @@
+## Student Details
+**Name:** Bipul Kumar
+**Roll Number:** 25B0987
+
 ## PPC
 ### planner.py
 - I found the nearest yellow cone to each blue cone (which would be its pair) and found their midpoint, this became a waypoint which I added to the path
