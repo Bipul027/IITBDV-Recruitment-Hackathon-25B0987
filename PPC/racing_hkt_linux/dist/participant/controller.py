@@ -12,35 +12,45 @@ You must implement two functions: plan() and control()
 
 # ─── CONTROLLER ───────────────────────────────────────────────────────────────
 import numpy as np
+import numpy as np
 
-
+def wayDist(p1: list[float], p2: list[float]) -> float:
+    return (p1[0]-p2[0])**2 + (p1[1]-p2[1])**2
 
 def steering(path: list[dict], state: dict):
 
     length_of_car = 2.6
     # Calculate steering angle based on path and vehicle state
-
-
-
-
-
-
     steer = 0.0 # Default steer value
+    pos = np.array([state["x"], state["y"]])
+    # Find nearest waypoint
+    dists = [wayDist(pos, [p["x"], p["y"]]) for p in path]
+    nearest_idx = np.argmin(dists)
+    idx = min(nearest_idx+2, len(path)-1)
+    w = np.array([path[idx]["x"], path[idx]["y"]])
+    wayAngle = np.arctan2((w-pos)[1], (w-pos)[0])
+
+    # set the steering stabilizing ratio
+    steer = 1*(wayAngle-state["yaw"])
+    steer = (steer + np.pi) % (2*np.pi) - np.pi
     # 0.5 in the max steering angle in radians (about 28.6 degrees)
     return np.clip(steer, -0.5, 0.5)
 
 
 def throttle_algorithm(target_speed, current_speed, dt):
-
-
-
-
-
-    
-    
     # generate the output for throttle command
     throttle = 0
     brake = 0.0
+    error = target_speed - current_speed
+
+    k = 3.91
+    throttle = k * error
+
+    if throttle < 0:
+        brake = -throttle
+        throttle = 0
+    else:
+        brake = 0
     # clip throttle and brake to [0, 1]
     return np.clip(throttle, 0.0, 1.0), np.clip(brake, 0.0, 1.0)
 
@@ -75,11 +85,11 @@ def control(
     throttle = 0.0
     steer    = 0.0
     brake = 0.0
-   
     # TODO: implement your controller here
     steer = steering(path, state)
-    target_speed = 5.0  # m/s, adjust as needed
+    target_speed = 13 - abs(steer)  # m/s, adjust as needed
     global integral
-    throttle, brake = throttle_algorithm(target_speed, state["vx"], 0.05)
+    speed = np.sqrt(state["vx"]**2 + state["vy"]**2)
+    throttle, brake = throttle_algorithm(target_speed, speed, 0.05)
 
     return throttle, steer, brake

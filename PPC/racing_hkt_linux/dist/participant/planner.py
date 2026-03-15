@@ -12,7 +12,8 @@ You must implement two functions: plan() and control()
 
 # ─── PLANNER ──────────────────────────────────────────────────────────────────
 import numpy as np
-
+def coneDist(p1: list[float], p2: list[float]) -> float:
+    return np.sqrt((p1[0]-p2[0])*(p1[0]-p2[0]) + (p1[1]-p2[1])*(p1[1]-p2[1]))
 def plan(cones: list[dict]) -> list[dict]:
     """
     Generate a path from the cone layout.
@@ -34,13 +35,14 @@ def plan(cones: list[dict]) -> list[dict]:
     yellow = np.array([[cone["x"], cone["y"]] for cone in cones if cone["side"] == "right"])
 
     # implement a planning algorithm to generate a path from the blue and yellow cones
-
-
-
-
-
-
-
-
+    for blueCone in blue:
+        yId = 0
+        cur = coneDist(blueCone, yellow[0])
+        for i in range (0, len(yellow)):
+            if (coneDist(blueCone, yellow[i]) < cur):
+                cur = coneDist(blueCone, yellow[i])
+                yId = i
+        yellowCone = yellow[yId]
+        path.append({"x": ((blueCone[0]+yellowCone[0])/2), "y": ((blueCone[1]+yellowCone[1])/2)})
     return path
 
