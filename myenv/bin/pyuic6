@@ -1,0 +1,6 @@
+#!/home/bipul/IITBDV-Recruitment-Hackathon-25B0987/myenv/bin/python3.10
+import sys
+from PyQt6.uic.pyuic import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())
