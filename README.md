@@ -7,7 +7,9 @@
 I made a python file cone_perception.py to perform the task
 - The model directly gave the positions of the cones, so I detected the cones and found their height using the bounding box dimensions provided by the model.
 - Now using the pin-hole camera formula which uses similarity of triangles, the height in pixels can be used to find the depth of the cones.
-- I used cv2 library to depict lables and bounding boxes
+### Assumptions 
+- Assumed that the model is working correctly and giving the correct bounding box coordinates
+- Assumed that cv2 library has to be used to depict boxes and labels as I couldn't find labelling features in YOLO
 ## PPC
 ### planner.py
 - I found the nearest yellow cone to each blue cone (which would be its pair) and found their midpoint, this became a waypoint which I added to the path
